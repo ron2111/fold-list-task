@@ -22,6 +22,9 @@ function App() {
     Array(5).fill(null)
   );
 
+  const [selectedValue, setSelectedValue] = useState<any | null>(null); // Track selected value
+  const [menuIsOpen, setMenuIsOpen] = useState<boolean>(true); // Control dropdown menu visibility
+
   useEffect(() => {
     axios
       .get(
@@ -48,7 +51,7 @@ function App() {
     updatedList[index] = initialItem; // Make the item editable
     setList(updatedList);
   };
-  //   --------------- focus lost--------------
+
   const handleBlur = (
     list: Array<ListItem>,
     setList: (list: Array<ListItem>) => void,
@@ -67,7 +70,6 @@ function App() {
     }
   };
 
-  //   --------------- clear btn func--------------
   const handleClearClick = (
     list: Array<ListItem>,
     setList: (list: Array<ListItem>) => void,
@@ -81,27 +83,20 @@ function App() {
   const dragItem = React.useRef<any>(null);
   const dragOverItem = React.useRef<any>(null);
 
-  //   --------------- drag func--------------
   const handleSort = (
     list: Array<ListItem>,
     setList: (list: Array<ListItem>) => void,
     index: number
   ) => {
-    //duplicate items
     let _skillItems = [...list];
-
-    //remove and save the dragged item content
     let draggedItemContent = _skillItems.splice(dragItem.current, 1)[0];
 
     _skillItems.splice(dragOverItem.current, 0, draggedItemContent);
-    //reset the position ref
     dragItem.current = null;
     dragOverItem.current = null;
-    //update the actual array
     setList(_skillItems);
   };
 
-  // fetched data
   const [data, setData] = useState<any[]>([]);
   const [filterData, setFilterData] = useState<any[]>([]);
 
@@ -129,6 +124,19 @@ function App() {
     const updatedOptions = [...leftSelectedOptions];
     updatedOptions[index] = selectedOption;
     setLeftSelectedOptions(updatedOptions);
+
+    // Hide the dropdown box after selection
+    setMenuIsOpen(false);
+
+    // Pass the selected value to the previous input
+    if (selectedOption) {
+      const updatedList = [...leftList];
+      updatedList[index] = selectedOption.label;
+      setLeftList(updatedList);
+
+      // Track the selected value
+      setSelectedValue(selectedOption);
+    }
   };
 
   const handleRightOptionChange = (
@@ -138,6 +146,19 @@ function App() {
     const updatedOptions = [...rightSelectedOptions];
     updatedOptions[index] = selectedOption;
     setRightSelectedOptions(updatedOptions);
+
+    // Hide the dropdown box after selection
+    setMenuIsOpen(false);
+
+    // Pass the selected value to the previous input
+    if (selectedOption) {
+      const updatedList = [...rightList];
+      updatedList[index] = selectedOption.label;
+      setRightList(updatedList);
+
+      // Track the selected value
+      setSelectedValue(selectedOption);
+    }
   };
 
   return (
@@ -164,6 +185,7 @@ function App() {
                 >
                   {item === initialItem ? (
                     <Select
+                      className="select"
                       options={options}
                       value={leftSelectedOptions[index]}
                       onChange={(selectedOption: any) =>
@@ -172,6 +194,7 @@ function App() {
                       isSearchable
                       isClearable
                       placeholder={index + 1 + ". " + item}
+                      // menuIsOpen={menuIsOpen}
                     />
                   ) : (
                     index + 1 + ". " + item
@@ -193,14 +216,13 @@ function App() {
                   draggable
                   onDragStart={(e) => (dragItem.current = index)}
                   onDragEnter={(e) => (dragOverItem.current = index)}
-                  onDragEnd={(e) =>
-                    handleSort(rightList, setRightList, index + 5)
-                  }
+                  onDragEnd={(e) => handleSort(rightList, setRightList, index)}
                   onDragOver={(e) => e.preventDefault()}
                   key={index}
                 >
                   {item === initialItem ? (
                     <Select
+                      className="select"
                       options={options}
                       value={rightSelectedOptions[index]}
                       onChange={(selectedOption: any) =>
@@ -209,6 +231,7 @@ function App() {
                       isSearchable
                       isClearable
                       placeholder={index + 6 + ". " + item}
+                      // menuIsOpen={menuIsOpen}
                     />
                   ) : (
                     index + 6 + ". " + item
