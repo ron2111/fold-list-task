@@ -57,27 +57,13 @@ function App() {
   };
 
 
-//   //   Right List drag func
+// Fetch func
 
-//   const handleRightSort = () => {
-//     //duplicate items
-//     let _skillItems = [...rightList];
 
-//     //remove and save the dragged item content
-//     const draggedItemContent = _skillItems.splice(dragItem.current, 1)[0];
-
-//     //switch the position
-//     _skillItems.splice(dragOverItem.current, 0, draggedItemContent);
-
-//     //reset the position ref
-//     dragItem.current = null;
-//     dragOverItem.current = null;
-
-//     //update the actual array
-//     setRightList(_skillItems);
-//   };
 
   return (
+    <div className='main-Container'>
+        <h4><li>Things you are good at</li></h4>
     <div className="App"> 
     {/* main container */}
         <h4 className='subHead'>The skills you mention here will help organizers in assesing you as a potential participant.</h4>
@@ -100,7 +86,7 @@ function App() {
                   onBlur={(e) => handleBlur(leftList, setLeftList, index, e)} // when html event loses focus
                 />
               ) : (
-                index + ". " + item
+                index + 1+ ". " + item
               )}
               <i className="fa-regular fa-circle-xmark"onClick={() => handleClearClick(leftList, setLeftList, index)}></i>
             </li>
@@ -125,7 +111,7 @@ function App() {
                   onBlur={(e) => handleBlur(rightList, setRightList, index, e)}
                 />
               ) : (
-                index + 5 + ". " + item
+                index + 6 + ". " + item
               )}
               <i className="fa-regular fa-circle-xmark"onClick={() => handleClearClick(rightList, setRightList, index)}></i>
             </li>
@@ -134,7 +120,7 @@ function App() {
       </div>
         </div>
     </div>
-    
+    </div>
   );
 }
 
