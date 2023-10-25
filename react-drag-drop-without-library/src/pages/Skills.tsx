@@ -13,7 +13,7 @@ function App() {
     updatedList[index] = initialItem; // Make the item editable
     setList(updatedList);
   };
-
+//   --------------- focus lost--------------
   const handleBlur = (list: Array<ListItem>, setList: (list: Array<ListItem>) => void, index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const updatedList = [...list];
     if(list===rightList){
@@ -28,6 +28,7 @@ function App() {
     }
   };
 
+//   --------------- clear btn func--------------
   const handleClearClick = (list: Array<ListItem>, setList: (list: Array<ListItem>) => void, index: number) => {
     const updatedList = [...list];
     updatedList[index] = initialItem;
@@ -37,21 +38,18 @@ function App() {
   const dragItem = React.useRef<any>(null);
   const dragOverItem = React.useRef<any>(null);
 
-//   Left List drag func
+//   --------------- drag func--------------
   const handleSort = (list: Array<ListItem>, setList: (list: Array<ListItem>) => void, index: number) => {
     //duplicate items
     let _skillItems = [...list];
 
     //remove and save the dragged item content
     let draggedItemContent = _skillItems.splice(dragItem.current, 1)[0];
-    // draggedItemContent = index+1 + ". " + draggedItemContent.substring(3,draggedItemContent.length);
-    //switch the position
+    
     _skillItems.splice(dragOverItem.current, 0, draggedItemContent);
-
     //reset the position ref
     dragItem.current = null;
     dragOverItem.current = null;
-
     //update the actual array
     setList(_skillItems);
   };
