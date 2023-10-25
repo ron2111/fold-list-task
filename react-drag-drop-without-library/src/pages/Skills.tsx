@@ -12,12 +12,7 @@ function App() {
   const [rightList, setRightList] = useState<Array<ListItem>>(
     Array(5).fill(initialItem)
   );
-  const options = [
-    { value: "JAVA", label: "java" },
-    { value: "JS", label: "js" },
-    { value: "HTML", label: "html" },
-    { value: "CSS", label: "css" },
-  ];
+
   const handleItemClick = (
     list: Array<ListItem>,
     setList: (list: Array<ListItem>) => void,
