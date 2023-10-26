@@ -7,6 +7,7 @@ type ListItem = string;
 function App() {
   const initialItem = "Add a skill";
 
+  /* ----------------------------Local Storage Data Retrieval--------------------- */
   const [leftList, setLeftList] = useState<Array<ListItem>>(() => {
     const storedLeftList = localStorage.getItem("leftList");
     return storedLeftList
@@ -14,6 +15,7 @@ function App() {
       : Array(5).fill(initialItem);
   });
 
+  /* ----------------------------Local Storage Data Retrieval--------------------- */
   const [rightList, setRightList] = useState<Array<ListItem>>(() => {
     const storedRightList = localStorage.getItem("rightList");
     return storedRightList
@@ -46,6 +48,7 @@ function App() {
   const [selectedValue, setSelectedValue] = useState<any | null>(null); // Track selected value
   const [menuIsOpen, setMenuIsOpen] = useState<boolean>(true); // Control dropdown menu visibility
 
+  /* ----------------------------API DATA FETCH--------------------- */
   useEffect(() => {
     axios
       .get(
@@ -63,6 +66,9 @@ function App() {
       });
   }, []);
 
+  {
+    /* ----------------------------LOCAL STORAGE HANDLING--------------------- */
+  }
   useEffect(() => {
     localStorage.setItem("leftList", JSON.stringify(leftList));
     localStorage.setItem("rightList", JSON.stringify(rightList));
@@ -86,6 +92,9 @@ function App() {
     setList(updatedList);
   };
 
+  {
+    /* ----------------------------Input Focus Lost--------------------- */
+  }
   const handleBlur = (
     list: Array<ListItem>,
     setList: (list: Array<ListItem>) => void,
@@ -104,6 +113,9 @@ function App() {
     }
   };
 
+  {
+    /* ----------------------------CLEAR BTN--------------------- */
+  }
   const handleClearClick = (
     list: Array<ListItem>,
     setList: (list: Array<ListItem>) => void,
@@ -117,6 +129,9 @@ function App() {
   const dragItem = React.useRef<any>(null);
   const dragOverItem = React.useRef<any>(null);
 
+  {
+    /* ----------------------------MAIN DRAG FUNCTION--------------------- */
+  }
   const handleSort = (
     list: Array<ListItem>,
     setList: (list: Array<ListItem>) => void,
@@ -134,23 +149,29 @@ function App() {
   const [data, setData] = useState<any[]>([]);
   const [filterData, setFilterData] = useState<any[]>([]);
 
-  useEffect(() => {
-    fetch(
-      "https://api.stackexchange.com/2.3/tags?order=desc&sort=popular&site=stackoverflow"
-    )
-      .then((res) => res.json())
-      .then((fetchedData) => {
-        setData(fetchedData.items);
-        setFilterData(fetchedData.items);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  {
+    /* ----------------------------API DATA FETCH--------------------- */
+  }
+  // useEffect(() => {
+  //   fetch(
+  //     "https://api.stackexchange.com/2.3/tags?order=desc&sort=popular&site=stackoverflow"
+  //   )
+  //     .then((res) => res.json())
+  //     .then((fetchedData) => {
+  //       setData(fetchedData.items);
+  //       setFilterData(fetchedData.items);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
 
-  const handleFilter = (value: string) => {
-    const res = filterData.filter((f) => f.name.toLowerCase().includes(value));
-    setData(res);
-  };
+  // const handleFilter = (value: string) => {
+  //   const res = filterData.filter((f) => f.name.toLowerCase().includes(value));
+  //   setData(res);
+  // };
 
+  {
+    /* ----------------------------LEFT LIST DROPDOWN HANDLING--------------------- */
+  }
   const handleLeftOptionChange = (
     index: number,
     selectedOption: any | null
@@ -172,7 +193,9 @@ function App() {
       setSelectedValue(selectedOption);
     }
   };
-
+  {
+    /* ----------------------------RIGHT LIST DROPDOWN HANDLING--------------------- */
+  }
   const handleRightOptionChange = (
     index: number,
     selectedOption: any | null
@@ -182,16 +205,15 @@ function App() {
     setRightSelectedOptions(updatedOptions);
 
     // Hide the dropdown box after selection
-    // Hide the dropdown box after selection
     setMenuIsOpen(false);
 
-    // Pass the selected value to the previous input
+    // PassING the selected value to the previous input
     if (selectedOption) {
       const updatedList = [...rightList];
       updatedList[index] = selectedOption.label;
       setRightList(updatedList);
 
-      // Track the selected value
+      // Tracking the selected value
       setSelectedValue(selectedOption);
     }
   };
@@ -206,7 +228,9 @@ function App() {
           The skills you mention here will help organizers in assessing you as a
           potential participant.
         </h4>
+
         <div className="columns">
+          {/* ----------------------------LEFT LIST--------------------- */}
           <div className="left-column">
             <ul>
               {leftList.map((item, index) => (
@@ -243,6 +267,8 @@ function App() {
               ))}
             </ul>
           </div>
+
+          {/* ----------------------------RIGHT LIST--------------------- */}
           <div className="right-column">
             <ul>
               {rightList.map((item, index) => (
@@ -280,6 +306,25 @@ function App() {
             </ul>
           </div>
         </div>
+      </div>
+      {/* --------------FOOTER-------- */}
+      <div
+        className="footer"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
+      >
+        Made By :
+        <a className="cp-link" target="_blank" href="https://rohan21.tech/">
+          Rohan Sharma
+        </a>
+        <br />
+        CODE :
+        <a
+          className="cp-link"
+          target="_blank"
+          href="https://github.com/ron2111/fold-list-task/tree/main/react-drag-drop-without-library"
+        >
+          Github Repo
+        </a>
       </div>
     </div>
   );
