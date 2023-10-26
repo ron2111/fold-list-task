@@ -250,6 +250,13 @@ function App() {
                       onChange={(selectedOption: any) =>
                         handleLeftOptionChange(index, selectedOption)
                       }
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          backgroundColor: "rgb(116, 234, 205)",
+                          borderColor: "transparent",
+                        }),
+                      }}
                       isSearchable
                       isClearable
                       placeholder={index + 1 + ". " + item}
@@ -288,6 +295,13 @@ function App() {
                       onChange={(selectedOption: any) =>
                         handleRightOptionChange(index, selectedOption)
                       }
+                      styles={{
+                        control: (baseStyles, state) => ({
+                          ...baseStyles,
+                          backgroundColor: "rgb(116, 234, 205)",
+                          borderColor: "transparent",
+                        }),
+                      }}
                       isSearchable
                       isClearable
                       placeholder={index + 6 + ". " + item}

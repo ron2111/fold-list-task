@@ -19,11 +19,6 @@ body {
   padding: 40px;
 }
 
-.list-container__right {
-  flex: 1;
-  border: 2px dotted #888cf0;
-}
-
 h3 {
   font-size: 30px;
 }
@@ -131,7 +126,7 @@ input:focus {
   width: 210px;
   height: 40px;
   border: none;
-  margin: -11.5px;
+  margin: -10px;
 }
 
 .footer {
