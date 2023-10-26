@@ -7,19 +7,40 @@ type ListItem = string;
 function App() {
   const initialItem = "Add a skill";
 
-  const [leftList, setLeftList] = useState<Array<ListItem>>(
-    Array(5).fill(initialItem)
-  );
-  const [rightList, setRightList] = useState<Array<ListItem>>(
-    Array(5).fill(initialItem)
-  );
+  const [leftList, setLeftList] = useState<Array<ListItem>>(() => {
+    const storedLeftList = localStorage.getItem("leftList");
+    return storedLeftList
+      ? JSON.parse(storedLeftList)
+      : Array(5).fill(initialItem);
+  });
+
+  const [rightList, setRightList] = useState<Array<ListItem>>(() => {
+    const storedRightList = localStorage.getItem("rightList");
+    return storedRightList
+      ? JSON.parse(storedRightList)
+      : Array(5).fill(initialItem);
+  });
+
   const [options, setOptions] = useState<any[]>([]);
 
-  const [leftSelectedOptions, setLeftSelectedOptions] = useState<any[]>(
-    Array(5).fill(null)
-  );
+  const [leftSelectedOptions, setLeftSelectedOptions] = useState<any[]>(() => {
+    const storedLeftSelectedOptions = localStorage.getItem(
+      "leftSelectedOptions"
+    );
+    return storedLeftSelectedOptions
+      ? JSON.parse(storedLeftSelectedOptions)
+      : Array(5).fill(null);
+  });
+
   const [rightSelectedOptions, setRightSelectedOptions] = useState<any[]>(
-    Array(5).fill(null)
+    () => {
+      const storedRightSelectedOptions = localStorage.getItem(
+        "rightSelectedOptions"
+      );
+      return storedRightSelectedOptions
+        ? JSON.parse(storedRightSelectedOptions)
+        : Array(5).fill(null);
+    }
   );
 
   const [selectedValue, setSelectedValue] = useState<any | null>(null); // Track selected value
@@ -41,6 +62,19 @@ function App() {
         console.error("Error fetching options:", error);
       });
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("leftList", JSON.stringify(leftList));
+    localStorage.setItem("rightList", JSON.stringify(rightList));
+    localStorage.setItem(
+      "leftSelectedOptions",
+      JSON.stringify(leftSelectedOptions)
+    );
+    localStorage.setItem(
+      "rightSelectedOptions",
+      JSON.stringify(rightSelectedOptions)
+    );
+  }, [leftList, rightList, leftSelectedOptions, rightSelectedOptions]);
 
   const handleItemClick = (
     list: Array<ListItem>,
@@ -148,6 +182,7 @@ function App() {
     setRightSelectedOptions(updatedOptions);
 
     // Hide the dropdown box after selection
+    // Hide the dropdown box after selection
     setMenuIsOpen(false);
 
     // Pass the selected value to the previous input
@@ -194,7 +229,6 @@ function App() {
                       isSearchable
                       isClearable
                       placeholder={index + 1 + ". " + item}
-                      // menuIsOpen={menuIsOpen}
                     />
                   ) : (
                     index + 1 + ". " + item
@@ -231,7 +265,6 @@ function App() {
                       isSearchable
                       isClearable
                       placeholder={index + 6 + ". " + item}
-                      // menuIsOpen={menuIsOpen}
                     />
                   ) : (
                     index + 6 + ". " + item
